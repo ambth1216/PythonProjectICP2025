@@ -28,6 +28,7 @@ class ImageFilterApp:
         self.gaussian_blur = None
         self.grayscale_arr = None
         self.edge_arr = None
+        self.flip_arr = None
         self.original_image = None # Pillow image object
         self.working_image = None  # Image on which filters are being applied
         self.display_image = None  # Scaled up image
@@ -105,7 +106,7 @@ class ImageFilterApp:
         self.rotate_button.pack(side=LEFT, padx=5)
 
         # Image flip button
-        self.flip_button = Button(self.buttons_frame, text='Flip', state=DISABLED, command=self.flip)
+        self.flip_button = Button(self.buttons_frame, text='Flip', state=DISABLED, command=self.flip_image)
         self.flip_button.pack(side=LEFT, padx=5)
 
         #Reset button
@@ -446,7 +447,10 @@ class ImageFilterApp:
 
     def flip_image(self):
         if self.working_image:
-            self.working_image = cv2.flip(self.working_image, 0) # 0 is the flip tag means flipping image vertically
+            self.numpy_opreations()
+            self.flip_arr = self.arr_image
+            self.flip_arr = cv2.flip(self.flip_arr, 1) # 1 is the flip tag means flipping image horizontly
+            self.working_image = Image.fromarray(self.flip_arr)
             self.update_canvas()
             self.status_label.config(text='Image flipped')               
 
