@@ -104,6 +104,10 @@ class ImageFilterApp:
         self.rotate_button = Button(self.buttons_frame, text="Rotate", state=DISABLED, command=self.rot_img)
         self.rotate_button.pack(side=LEFT, padx=5)
 
+        # Image flip button
+        self.flip_button = Button(self.buttons_frame, text='Flip', state=DISABLED, command=self.flip)
+        self.flip_button.pack(side=LEFT, padx=5)
+
         #Reset button
         self.reset_button = Button(self.buttons_frame, text='Reset', state=DISABLED, command=self.reset_image_to_original)
         self.reset_button.pack(side=LEFT, padx=4)
@@ -137,6 +141,7 @@ class ImageFilterApp:
                 self.gray_scale_button.config(state=NORMAL)
                 self.edge_button.config(state=NORMAL)
                 self.rotate_button.config(state=NORMAL)
+                self.flip_button.config(state=NORMAL)
                 self.reset_button.config(state=NORMAL)
             except Exception as e:
                 self.status_label.config(text=f'Error {str(e)}')
@@ -437,7 +442,13 @@ class ImageFilterApp:
 
             self.working_image = Image.fromarray(self.arr_image)
             self.update_canvas()
-            self.status_label.config(text='Image rotated')               
+            self.status_label.config(text='Image rotated')
+
+    def flip_image(self):
+        if self.working_image:
+            self.working_image = cv2.flip(self.working_image, 0) # 0 is the flip tag means flipping image vertically
+            self.update_canvas()
+            self.status_label.config(text='Image flipped')               
 
 # resize the image of the canvas when the window is configured i.e when window is maximised or its size is changed
 # the below function recalculate the image scale factor 
